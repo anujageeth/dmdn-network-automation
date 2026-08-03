@@ -1,0 +1,11 @@
+---
+vlans:
+  - { id: 10, name: "HOD_OFFICE" }
+  - { id: 20, name: "POWER_HV" }
+  - { id: 30, name: "ELEC_MACH" }
+  - { id: 40, name: "ELEC_MEAS" }
+  - { id: 50, name: "COMM_SYS" }
+  - { id: 60, name: "UG_PROJ" }
+  - { id: 70, name: "COMP_CTR" }
+  - { id: 80, name: "HPC_LAB" }
+  - { id: 99, name: "MGT" }
