@@ -1,0 +1,97 @@
+Connected to Dynamips VM "SW-A-DIS" (ID 10, type c3725) - Console port
+Press ENTER to get the prompt.
+Ethernet1/13, changed state to down
+*Mar  1 00:00:05.687: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/12, changed state to down
+*Mar  1 00:00:05.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/11, changed state to down
+*Mar  1 00:00:05.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/10, changed state to down
+*Mar  1 00:00:05.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/9, changed state to down
+*Mar  1 00:00:05.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/8, changed state to down
+*Mar  1 00:00:05.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/7, changed state to down
+
+***************************************************************
+This is a normal Router with a SW module inside (NM-16ESW)
+It has been preconfigured with hard coded speed and duplex
+
+To create vlans use the command "vlan database" from exec mode
+After creating all desired vlans use "exit" to apply the config
+
+To view existing vlans use the command "show vlan-switch brief"
+
+Warning: You are using an old IOS image for this router.
+Please update the IOS to enable the "macro" command!
+***************************************************************
+
+
+SW-A-DIS#vlan database
+SW-A-DIS(vlan)#vlan 10 name VLAN_DEIE
+VLAN 10 added:
+    Name: VLAN_DEIE
+SW-A-DIS(vlan)#vlan 20 name VLAN_DCEE
+VLAN 20 added:
+    Name: VLAN_DCEE
+SW-A-DIS(vlan)#vlan 30 name VLAN_DMME
+VLAN 30 added:
+    Name: VLAN_DMME
+SW-A-DIS(vlan)#vlan 40 name VLAN_DIS
+VLAN 40 added:
+    Name: VLAN_DIS
+SW-A-DIS(vlan)#vlan 99 name MGMT
+VLAN 99 added:
+    Name: MGMT
+SW-A-DIS(vlan)#vlan 100 name NATIVE
+VLAN 100 added:
+    Name: NATIVE
+SW-A-DIS(vlan)#exit
+APPLY completed.
+Exiting....
+SW-A-DIS#
+*Mar  1 00:19:54.607: %SPANTREE-7-RECV_1Q_NON_TRUNK: Received 802.1Q BPDU on non                                             trunk FastEthernet1/0 VLAN1.
+*Mar  1 00:19:54.611: %SPANTREE-7-BLOCK_PORT_TYPE: Blocking FastEthernet1/0 on V                                            LAN1. Inconsistent port type.PVST+: restarted the forward delay timer for FastEt                                            hernet1/0
+
+SW-A-DIS#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-A-DIS(config)#interface FastEthernet 1/0
+SW-A-DIS(config-if)#switchport trunk encapsulation dot1q
+SW-A-DIS(config-if)#switchport mode trunk
+SW-A-DIS(config-if)#switchport trunk native vlan 100
+SW-A-DIS(config-if)#exit
+*Mar  1 00:24:23.071: %DTP-5-TRUNKPORTON: Port Fa1/0 has become dot1q trunk
+SW-A-DIS(config-if)#exit
+SW-A-DIS(config)#configure terminal
+                         ^
+% Invalid input detected at '^' marker.
+
+SW-A-DIS(config)#interface range FastEthernet 1/2 - 4
+SW-A-DIS(config-if-range)#switchport mode access
+SW-A-DIS(config-if-range)#switchport access vlan 40
+SW-A-DIS(config-if-range)#spanning-tree portfast
+%Warning: portfast should only be enabled on ports connected to a single host.
+ Connecting hubs, concentrators, switches,  bridges, etc.to this interface
+ when portfast is enabled, can cause temporary spanning tree loops.
+ Use with CAUTION
+
+%Portfast has been configured on FastEthernet1/2 but will only
+ have effect when the interface is in a non-trunking mode.
+%Warning: portfast should only be enabled on ports connected to a single host.
+ Connecting hubs, concentrators, switches,  bridges, etc.to this interface
+ when portfast is enabled, can cause temporary spanning tree loops.
+ Use with CAUTION
+
+%Portfast has been configured on FastEthernet1/3 but will only
+ have effect when the interface is in a non-trunking mode.
+%Warning: portfast should only be enabled on ports connected to a single host.
+ Connecting hubs, concentrators, switches,  bridges, etc.to this interface
+ when portfast is enabled, can cause temporary spanning tree loops.
+ Use with CAUTION
+
+%Portfast has been configured on FastEthernet1/4 but will only
+ have effect when the interface is in a non-trunking mode.
+SW-A-DIS(config-if-range)#exit
+SW-A-DIS(config)#
+SW-A-DIS#
+*Mar  1 00:29:28.763: %SYS-5-CONFIG_I: Configured from console by console
+SW-A-DIS#
+SW-A-DIS#write memory
+Building configuration...
+[OK]
+SW-A-DIS#

@@ -1,0 +1,28 @@
+SW-A-DEIE(config)#interface FastEthernet 1/1
+SW-A-DEIE(config-if)# no switchport trunk encapsulation dot1q
+SW-A-DEIE(config-if)# no switchport mode trunk
+SW-A-DEIE(config-if)# switchport mode access
+SW-A-DEIE(config-if)# exit
+SW-A-DEIE(config)#interface range FastEthernet 1/2 - 3
+SW-A-DEIE(config-if-range)# switchport mode access
+SW-A-DEIE(config-if-range)# switchport access vlan 10
+SW-A-DEIE(config-if-range)# spanning-tree portfast
+%Warning: portfast should only be enabled on ports connected to a single host.
+ Connecting hubs, concentrators, switches,  bridges, etc.to this interface
+ when portfast is enabled, can cause temporary spanning tree loops.
+ Use with CAUTION
+
+%Portfast has been configured on FastEthernet1/2 but will only
+ have effect when the interface is in a non-trunking mode.
+%Warning: portfast should only be enabled on ports connected to a single host.
+ Connecting hubs, concentrators, switches,  bridges, etc.to this interface
+ when portfast is enabled, can cause temporary spanning tree loops.
+ Use with CAUTION
+
+%Portfast has been configured on FastEthernet1/3 but will only
+ have effect when the interface is in a non-trunking mode.
+SW-A-DEIE(config-if-range)# exit
+SW-A-DEIE(config)#do write memory
+Building configuration...
+[OK]
+SW-A-DEIE(config)#

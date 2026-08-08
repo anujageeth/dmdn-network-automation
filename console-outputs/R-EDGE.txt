@@ -1,0 +1,78 @@
+Connected to Dynamips VM "R-EDGE" (ID 1, type c7200) - Console port
+Press ENTER to get the prompt.
+
+This configuration is within the PCI bus capacity and is supported.
+
+Please refer to the following document "Cisco 7200 Series Port Adaptor
+Hardware Configuration Guidelines" on Cisco.com <http://www.cisco.com>
+for c7200 bandwidth points oversubscription and usage guidelines.
+
+
+5 FastEthernet interfaces
+509K bytes of NVRAM.
+
+8192K bytes of Flash internal SIMM (Sector size 256K).Installed image archive
+
+SETUP: new interface FastEthernet0/0 placed in "shutdown" state
+SETUP: new interface FastEthernet1/0 placed in "shutdown" state
+SETUP: new interface FastEthernet1/1 placed in "shutdown" state
+SETUP: new interface FastEthernet2/0 placed in "shutdown" state
+SETUP: new interface FastEthernet2/1 placed in "shutdown" state
+% Crashinfo may not be recovered at bootflash:crashinfo
+% This file system device reports an error
+
+
+Press RETURN to get started!
+
+
+*Aug  8 07:55:27.107: % Error opening nvram:/ifIndex-table No such file or direc                                            tory
+*Aug  8 07:55:32.671: %LINEPROTO-5-UPDOWN: Line protocol on Interface VoIP-Null0                                            , changed state to up
+*Aug  8 07:55:32.675: %LINK-3-UPDOWN: Interface FastEthernet0/0, changed state t                                            o up
+*Aug  8 07:55:32.683: %LINK-3-UPDOWN: Interface FastEthernet1/0, changed state t                                            o up
+*Aug  8 07:55:32.687: %LINK-3-UPDOWN: Interface FastEthernet1/1, changed state t                                            o up
+*Aug  8 07:55:32.687: %LINK-3-UPDOWN: Interface FastEthernet2/0, changed state t                                            o up
+*Aug  8 07:55:32.687: %LINK-3-UPDOWN: Interface FastEthernet2/1, changed state t                                            o up
+*Aug  8 07:55:32.759: %SYS-5-CONFIG_I: Configured from memory by console
+*Aug  8 07:55:32.887: %SYS-5-RESTART: System restarted --
+Cisco IOS Software, 7200 Software (C7200-ADVENTERPRISEK9-M), Version 12.4(24)T5,                                             RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2011 by Cisco Systems, Inc.
+Compiled Fri 04-Mar-11 06:49 by prod_rel_team
+*Aug  8 07:55:32.899: %SNMP-5-COLDSTART: SNMP agent on host R-EDGE is undergoing                                             a cold start
+*Aug  8 07:55:32.939: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is OFF
+*Aug  8 07:55:32.939: %CRYPTO-6-GDOI_ON_OFF: GDOI is OFF
+*Aug  8 07:55:33.683: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et0/0, changed state to down
+*Aug  8 07:55:33.687: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/0, changed state to down
+*Aug  8 07:55:33.687: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/1, changed state to down
+*Aug  8 07:55:33.687: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et2/0, changed state to down
+*Aug  8 07:55:33.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et2/1, changed state to down
+*Aug  8 07:55:34.759: %LINK-5-CHANGED: Interface FastEthernet0/0, changed state                                             to administratively down
+*Aug  8 07:55:34.763: %LINK-5-CHANGED: Interface FastEthernet1/0, changed state                                             to administratively down
+*Aug  8 07:55:34.767: %LINK-5-CHANGED: Interface FastEthernet1/1, changed state                                             to administratively down
+*Aug  8 07:55:34.767: %LINK-5-CHANGED: Interface FastEthernet2/0, changed state                                             to administratively down
+*Aug  8 07:55:34.767: %LINK-5-CHANGED: Interface FastEthernet2/1, changed state                                             to administratively down
+R-EDGE#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R-EDGE(config)#interface FastEthernet 0/0
+R-EDGE(config-if)# ip address 192.168.100.6 255.255.255.252
+R-EDGE(config-if)# no shutdown
+R-EDGE(config-if)#exit
+*Aug  8 08:21:25.683: %LINK-3-UPDOWN: Interface FastEthernet0/0, changed state t                                            o up
+*Aug  8 08:21:26.683: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et0/0, changed state to up
+R-EDGE(config-if)#exit
+R-EDGE(config)#router ospf 1
+R-EDGE(config-router)# network 192.168.100.4 0.0.0.3 area 0
+R-EDGE(config-router)#exit
+R-EDGE(config)#
+*Aug  8 08:58:14.243: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.100.5 on FastEthern                                            et0/0 from LOADING to FULL, Loading Done
+R-EDGE(config)#
+*Aug  8 09:49:11.895: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.100.5 on FastEthern                                            et0/0 from FULL to DOWN, Neighbor Down: Dead timer expired
+R-EDGE(config)#
+R-EDGE(config)#exit
+R-EDGE#
+R-EDGE#
+*Aug  8 11:13:40.455: %SYS-5-CONFIG_I: Configured from console by console
+R-EDGE#write memory
+Building configuration...
+[OK]
+R-EDGE#

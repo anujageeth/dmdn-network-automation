@@ -1,0 +1,92 @@
+Connected to Dynamips VM "R-CORE" (ID 2, type c7200) - Console port
+Press ENTER to get the prompt.
+tEthernet2/1, changed state to administratively down
+R-CORE#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R-CORE(config)#interface FastEthernet 0/0
+R-CORE(config-if)# ip address 192.168.100.1 255.255.255.252
+R-CORE(config-if)# no shutdown
+R-CORE(config-if)#interface FastEthernet 1/0
+R-CORE(config-if)# ip address 192.168.100.5 255.255.255.252
+R-CORE(config-if)# no shutdown
+R-CORE(config-if)#exit
+*Aug  8 08:20:34.123: %LINK-3-UPDOWN: Interface FastEthernet0/0, changed state t                                            o up
+*Aug  8 08:20:34.183: %LINK-3-UPDOWN: Interface FastEthernet1/0, changed state t                                            o up
+*Aug  8 08:20:35.123: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et0/0, changed state to up
+R-CORE(config-if)#exit
+*Aug  8 08:20:35.183: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthern                                            et1/0, changed state to up
+R-CORE(config-if)#exit
+R-CORE(config)#router ospf 1
+R-CORE(config-router)# network 192.168.100.0 0.0.0.3 area 0
+R-CORE(config-router)# network 192.168.100.4 0.0.0.3 area 0
+R-CORE(config-router)#exit
+R-CORE(config)#show ip ospf neighbor
+                ^
+% Invalid input detected at '^' marker.
+
+R-CORE(config)#exit
+R-CORE#configure terminal
+*Aug  8 08:30:05.851: %SYS-5-CONFIG_I: Configured from console by console
+R-CORE#show ip ospf neighbor
+
+R-CORE#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R-CORE(config)#interface FastEthernet 1/0
+R-CORE(config-if)# ip address 192.168.100.1 255.255.255.252
+% 192.168.100.0 overlaps with FastEthernet0/0
+R-CORE(config-if)# no shutdown
+R-CORE(config-if)#exit
+R-CORE(config)#do show ip ospf neighbor
+
+R-CORE(config)#exit
+R-CORE#
+*Aug  8 08:58:12.319: %SYS-5-CONFIG_I: Configured from console by console
+R-CORE#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R-CORE(config)#
+R-CORE(config)#! 1. Clear out the old configurations to prevent overlaps
+R-CORE(config)#default interface FastEthernet 0/0
+Building configuration...
+
+Interface FastEthernet0/0 set to default configuration
+R-CORE(config)#default interface FastEthernet 1/0
+Building configuration...
+
+Interface FastEthernet1/0 set to default configuration
+R-CORE(config)#
+R-CORE(config)#! 2. Configure the link to R-EDGE (Subnet 192.168.100.4/30)
+R-CORE(config)#interface FastEthernet 0/0
+R-CORE(config-if)# ip address 192.168.100.5 255.255.255.252
+R-CORE(config-if)# no shutdown
+R-CORE(config-if)#
+R-CORE(config-if)#$ure the link to SW-CORE (Subnet 192.168.100.0/30)
+R-CORE(config-if)#interface FastEthernet 1/0
+R-CORE(config-if)# ip address 192.168.100.1 255.255.255.252
+R-CORE(config-if)# no shutdown
+R-CORE(config-if)#exit
+R-CORE(config)#
+*Aug  8 08:58:24.279: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.100.6 on FastEthern                                            et0/0 from LOADING to FULL, Loading Done
+R-CORE(config)#
+*Aug  8 08:58:28.719: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.100.2 on FastEthern                                            et1/0 from LOADING to FULL, Loading Done
+R-CORE(config)#show ip ospf neighbor
+                ^
+% Invalid input detected at '^' marker.
+
+R-CORE(config)#do show ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+192.168.100.2     1   FULL/DR         00:00:33    192.168.100.2   FastEthernet1/                                            0
+192.168.100.6     1   FULL/DR         00:00:37    192.168.100.6   FastEthernet0/                                            0
+R-CORE(config)#
+R-CORE(config)#
+*Aug  8 09:49:23.923: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.100.6 on FastEthern                                            et0/0 from FULL to DOWN, Neighbor Down: Dead timer expired
+R-CORE(config)#
+*Aug  8 09:49:48.623: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.100.2 on FastEthern                                            et1/0 from FULL to DOWN, Neighbor Down: Dead timer expired
+R-CORE(config)#
+R-CORE(config)#exit
+R-CORE#configure terminal
+*Aug  8 11:16:19.835: %SYS-5-CONFIG_I: Configured from console by console
+R-CORE#write memory
+Building configuration...
+[OK]
+R-CORE#
