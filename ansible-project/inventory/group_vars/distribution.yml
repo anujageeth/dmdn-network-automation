@@ -1,0 +1,12 @@
+---
+# inventory/group_vars/distribution.yml
+# Default VLANs present on every distribution switch (MGMT + NATIVE).
+# Each switch's department VLAN is added in its host_vars file, which
+# overrides this list per normal Ansible variable precedence.
+vlans:
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+native_vlan: 100

@@ -1,0 +1,15 @@
+---
+# Distribution switch for DCEE.
+vlans:
+  - vlan_id: 20
+    name: VLAN_DCEE
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+trunk_interfaces:
+  - interface: FastEthernet1/0
+    description: "Uplink to SW-CORE"
+  - interface: FastEthernet1/1
+    description: "Downlink to SW-A-DCEE"

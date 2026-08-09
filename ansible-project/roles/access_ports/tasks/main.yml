@@ -1,0 +1,24 @@
+---
+# roles/access_ports/tasks/main.yml
+# Assigns access-switch host ports to their department VLAN, per the
+# Host IP Addressing Table (Section 3). Only runs where
+# 'access_interfaces' is defined (distribution switches have none).
+
+- name: Configure access ports
+  cisco.ios.ios_config:
+    lines:
+      - "switchport mode access"
+      - "switchport access vlan {{ item.vlan_id }}"
+      - "description {{ item.description }}"
+      - "spanning-tree portfast"
+      - "no shutdown"
+    parents: "interface {{ item.interface }}"
+  loop: "{{ access_interfaces | default([]) }}"
+  loop_control:
+    label: "{{ item.interface }} -> VLAN {{ item.vlan_id }}"
+  register: access_output
+
+- name: Save configuration if modified
+  cisco.ios.ios_config:
+    save_when: modified
+  when: access_output.changed

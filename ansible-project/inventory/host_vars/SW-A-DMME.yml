@@ -1,0 +1,21 @@
+---
+# Access switch for DMME hosts.
+vlans:
+  - vlan_id: 30
+    name: VLAN_DMME
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+trunk_interfaces:
+  - interface: FastEthernet1/0
+    description: "Uplink to SW-D-DMME"
+
+access_interfaces:
+  - interface: FastEthernet1/2
+    vlan_id: 30
+    description: "PC-DMME-1 (10.10.30.10)"
+  - interface: FastEthernet1/3
+    vlan_id: 30
+    description: "PC-DMME-2 (10.10.30.11)"

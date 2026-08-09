@@ -1,0 +1,21 @@
+---
+# Access switch for DEIE hosts (matches Host IP Addressing Table).
+vlans:
+  - vlan_id: 10
+    name: VLAN_DEIE
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+trunk_interfaces:
+  - interface: FastEthernet1/0
+    description: "Uplink to SW-D-DEIE"
+
+access_interfaces:
+  - interface: FastEthernet1/2
+    vlan_id: 10
+    description: "PC-DEIE-1 (10.10.10.10)"
+  - interface: FastEthernet1/3
+    vlan_id: 10
+    description: "PC-DEIE-2 (10.10.10.11)"

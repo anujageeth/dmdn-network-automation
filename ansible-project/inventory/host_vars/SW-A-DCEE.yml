@@ -1,0 +1,21 @@
+---
+# Access switch for DCEE hosts.
+vlans:
+  - vlan_id: 20
+    name: VLAN_DCEE
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+trunk_interfaces:
+  - interface: FastEthernet1/0
+    description: "Uplink to SW-D-DCEE"
+
+access_interfaces:
+  - interface: FastEthernet1/2
+    vlan_id: 20
+    description: "PC-DCEE-1 (10.10.20.10)"
+  - interface: FastEthernet1/3
+    vlan_id: 20
+    description: "PC-DCEE-2 (10.10.20.11)"

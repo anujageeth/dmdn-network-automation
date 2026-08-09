@@ -1,0 +1,29 @@
+---
+# roles/trunking/tasks/main.yml
+# Configures trunk links (distribution<->core, distribution<->access,
+# and SW-A-DIS<->SW-CORE) with the allowed VLAN list and native
+# VLAN 100, per Section 3, step 2 of the project plan.
+#
+# Requires host_vars 'trunk_interfaces' (list of {interface,
+# description}) and the 'vlans' / 'native_vlan' variables, which are
+# supplied by group_vars/host_vars.
+
+- name: Configure trunk interfaces
+  cisco.ios.ios_config:
+    lines:
+      - "switchport trunk encapsulation dot1q"
+      - "switchport mode trunk"
+      - "switchport trunk native vlan {{ native_vlan }}"
+      - "switchport trunk allowed vlan {{ vlans | map(attribute='vlan_id') | join(',') }}"
+      - "description {{ item.description }}"
+      - "no shutdown"
+    parents: "interface {{ item.interface }}"
+  loop: "{{ trunk_interfaces | default([]) }}"
+  loop_control:
+    label: "{{ item.interface }} ({{ item.description }})"
+  register: trunk_output
+
+- name: Save configuration if modified
+  cisco.ios.ios_config:
+    save_when: modified
+  when: trunk_output.changed

@@ -1,0 +1,20 @@
+---
+# roles/vlans/tasks/main.yml
+# Creates VLANs using legacy 'vlan database' mode, required because
+# the c3725 switch image expects this workflow for VLAN creation
+# (see Section 3 platform note in the project plan).
+
+- name: Configure VLANs
+  cisco.ios.ios_config:
+    lines:
+      - "vlan {{ item.vlan_id }} name {{ item.name }}"
+    parents: vlan database
+  loop: "{{ vlans }}"
+  loop_control:
+    label: "VLAN {{ item.vlan_id }} ({{ item.name }})"
+  register: vlan_output
+
+- name: Save configuration if modified
+  cisco.ios.ios_config:
+    save_when: modified
+  when: vlan_output.changed

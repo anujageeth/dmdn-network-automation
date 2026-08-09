@@ -1,0 +1,184 @@
+# inventory.yaml
+# Single source of truth for Netmiko automation: credentials + all
+# per-device configuration data. No IPs/passwords are hardcoded in
+# the Python scripts -- everything is read from here.
+#
+# Credentials are pulled from environment variables at runtime
+# (see README.md), so nothing sensitive is committed to Git:
+#   export NETMIKO_USERNAME=admin
+#   export NETMIKO_PASSWORD=your_password
+#   export NETMIKO_ENABLE_SECRET=your_enable_secret
+
+credentials:
+  username: "${NETMIKO_USERNAME}"
+  password: "${NETMIKO_PASSWORD}"
+  enable_secret: "${NETMIKO_ENABLE_SECRET}"
+
+devices:
+
+  # ---------------------------------------------------------------
+  # Routers (c7200 / Dynamips)
+  # ---------------------------------------------------------------
+  - name: R-EDGE
+    ip: 10.99.99.2
+    device_type: cisco_ios
+    role: edge_router
+    interfaces:
+      - name: FastEthernet0/0
+        ip: 192.168.100.6
+        mask: 255.255.255.252
+        description: "Link to R-CORE"
+      - name: FastEthernet1/0
+        ip: 203.0.113.2          # placeholder ISP-facing / cloud-side address - replace with your GNS3 cloud segment
+        mask: 255.255.255.252
+        description: "Uplink to Internet Cloud"
+    default_route:
+      next_hop: 203.0.113.1      # replace with your Internet Cloud / simulated ISP next-hop
+    nat:
+      inside_interfaces: []       # R-EDGE has no VLAN-facing interfaces directly; NAT is sourced from SW-CORE-routed traffic
+      outside_interface: FastEthernet1/0
+      inside_source_acl: NAT_PERMIT
+      acl_rules:
+        - "permit 10.10.10.0 0.0.0.255"   # VLAN_DEIE
+        - "permit 10.10.20.0 0.0.0.255"   # VLAN_DCEE
+
+  - name: R-CORE
+    ip: 10.99.99.1
+    device_type: cisco_ios
+    role: core_router
+    interfaces:
+      - name: FastEthernet0/0
+        ip: 192.168.100.5
+        mask: 255.255.255.252
+        description: "Link to R-EDGE"
+      - name: FastEthernet1/0
+        ip: 192.168.100.1
+        mask: 255.255.255.252
+        description: "Link to SW-CORE"
+    ospf:
+      process_id: 1
+      networks:
+        - network: 192.168.100.4
+          wildcard: 0.0.0.3
+          area: 0
+        - network: 192.168.100.0
+          wildcard: 0.0.0.3
+          area: 0
+
+  # ---------------------------------------------------------------
+  # Core switch (c3725 / Dynamips) - L3 inter-VLAN routing + ACLs
+  # ---------------------------------------------------------------
+  - name: SW-CORE
+    ip: 10.99.99.3
+    device_type: cisco_ios
+    role: core_switch
+    routed_interface:
+      name: FastEthernet0/0
+      ip: 192.168.100.2
+      mask: 255.255.255.252
+      description: "Routed uplink to R-CORE"
+    svis:
+      - vlan: 10
+        ip: 10.10.10.1
+        mask: 255.255.255.0
+      - vlan: 20
+        ip: 10.10.20.1
+        mask: 255.255.255.0
+      - vlan: 30
+        ip: 10.10.30.1
+        mask: 255.255.255.0
+      - vlan: 40
+        ip: 10.10.40.1
+        mask: 255.255.255.0
+      - vlan: 99
+        ip: 10.99.99.3
+        mask: 255.255.255.0
+    ospf:
+      process_id: 1
+      networks:
+        - network: 192.168.100.0
+          wildcard: 0.0.0.3
+          area: 0
+        - network: 10.10.10.0
+          wildcard: 0.0.0.255
+          area: 0
+        - network: 10.10.20.0
+          wildcard: 0.0.0.255
+          area: 0
+        - network: 10.10.30.0
+          wildcard: 0.0.0.255
+          area: 0
+        - network: 10.10.40.0
+          wildcard: 0.0.0.255
+          area: 0
+        - network: 10.99.99.0
+          wildcard: 0.0.0.255
+          area: 0
+    # Extended named ACLs, applied INBOUND on each source VLAN's SVI,
+    # matching Section 4 of the project plan and the 4x4 matrix.
+    acls:
+      - name: ACL_DEIE_IN
+        apply_to_svi: 10
+        direction: in
+        rules:
+          - "permit ip 10.10.10.0 0.0.0.255 10.10.40.0 0.0.0.255"
+          - "permit udp host 10.10.40.100 any eq snmp"
+          - "permit tcp any host 10.99.99.3 eq 22"
+      - name: ACL_DCEE_IN
+        apply_to_svi: 20
+        direction: in
+        rules:
+          - "permit tcp 10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255 eq 80"
+          - "permit tcp 10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255 eq 443"
+          - "deny ip 10.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255"
+          - "permit udp host 10.10.40.100 any eq snmp"
+          - "permit tcp any host 10.99.99.3 eq 22"
+      - name: ACL_DMME_IN
+        apply_to_svi: 30
+        direction: in
+        rules:
+          - "deny ip 10.10.30.0 0.0.0.255 10.10.40.0 0.0.0.255"
+          - "deny ip 10.10.30.0 0.0.0.255 10.10.20.0 0.0.0.255"
+          - "permit udp host 10.10.40.100 any eq snmp"
+          - "permit tcp any host 10.99.99.3 eq 22"
+
+  # ---------------------------------------------------------------
+  # Distribution + access switches (c3725 / Dynamips)
+  # No interface/OSPF/ACL config here - VLANs/trunks/access ports
+  # are pushed by the Ansible roles instead. Listed here only so
+  # configure_snmp.py can reach them for monitoring.
+  # ---------------------------------------------------------------
+  - name: SW-D-DEIE
+    ip: 10.99.99.11
+    device_type: cisco_ios
+    role: distribution_switch
+
+  - name: SW-D-DCEE
+    ip: 10.99.99.12
+    device_type: cisco_ios
+    role: distribution_switch
+
+  - name: SW-D-DMME
+    ip: 10.99.99.13
+    device_type: cisco_ios
+    role: distribution_switch
+
+  - name: SW-A-DEIE
+    ip: 10.99.99.21
+    device_type: cisco_ios
+    role: access_switch
+
+  - name: SW-A-DCEE
+    ip: 10.99.99.22
+    device_type: cisco_ios
+    role: access_switch
+
+  - name: SW-A-DMME
+    ip: 10.99.99.23
+    device_type: cisco_ios
+    role: access_switch
+
+  - name: SW-A-DIS
+    ip: 10.99.99.24
+    device_type: cisco_ios
+    role: access_switch

@@ -1,0 +1,44 @@
+---
+# playbooks/rollback/rollback.yml
+#
+# Fast config-replace rollback path for the Ansible-managed switches.
+#
+#   1) 'backup' tag: takes a config backup BEFORE every site.yml run.
+#   2) 'rollback' tag: pushes that saved backup straight back onto
+#      the device with ios_config's `src`, replacing the running
+#      config - the fastest realistic rollback path for this project.
+#
+# (For manual/Netmiko-driven changes on R-CORE/R-EDGE/SW-CORE, use a
+# GNS3 snapshot restore instead - see MOP Section 7 / Rollback.)
+#
+# Usage:
+#   ansible-playbook playbooks/rollback/rollback.yml --tags backup
+#   ansible-playbook playbooks/rollback/rollback.yml --tags rollback -e rollback_confirm=true
+
+- hosts: distribution:access
+  gather_facts: no
+  connection: network_cli
+  vars:
+    backup_dir: "../backups"
+
+  tasks:
+    - name: Backup running-config before making changes
+      cisco.ios.ios_config:
+        backup: yes
+        backup_options:
+          filename: "{{ inventory_hostname }}_backup.cfg"
+          dir_path: "{{ backup_dir }}"
+      tags: [backup]
+
+    - name: Restore running-config from the saved backup
+      cisco.ios.ios_config:
+        src: "{{ backup_dir }}/{{ inventory_hostname }}_backup.cfg"
+        replace: config
+      tags: [rollback]
+      when: rollback_confirm | default(false) | bool
+
+    - name: Save configuration after rollback
+      cisco.ios.ios_config:
+        save_when: always
+      tags: [rollback]
+      when: rollback_confirm | default(false) | bool

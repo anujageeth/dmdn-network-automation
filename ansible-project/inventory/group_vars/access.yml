@@ -1,0 +1,12 @@
+---
+# inventory/group_vars/access.yml
+# Default VLANs present on every access switch (MGMT + NATIVE).
+# Each switch's department VLAN + access ports are set in its
+# host_vars file, which overrides this list.
+vlans:
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+native_vlan: 100

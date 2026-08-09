@@ -1,0 +1,27 @@
+---
+# Access switch for the DIS server farm (VLAN 40): hosts VM-AUTO,
+# VM-ZABBIX, VM-DHCP/WEB and 2x VPC. Cables directly to SW-CORE on
+# Fa1/x per the "SW-A-DIS uplink note" in the project plan - do NOT
+# use Fa0/0 or Fa0/1 for this branch.
+vlans:
+  - vlan_id: 40
+    name: VLAN_DIS
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+trunk_interfaces:
+  - interface: FastEthernet1/0
+    description: "Uplink to SW-CORE"
+
+access_interfaces:
+  - interface: FastEthernet1/2
+    vlan_id: 40
+    description: "PC-DIS-1 (10.10.40.10)"
+  - interface: FastEthernet1/3
+    vlan_id: 40
+    description: "PC-DIS-2 (10.10.40.11)"
+  - interface: FastEthernet1/4
+    vlan_id: 40
+    description: "Ubuntu-VM: VM-AUTO/VM-ZABBIX (10.10.40.100)"

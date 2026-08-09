@@ -1,0 +1,10 @@
+---
+# inventory/group_vars/all.yml
+# Dynamips timing note: c7200/c3725 nodes under software emulation
+# respond more slowly to SSH/CLI than QEMU-based images. Raise these
+# if you see connection timeouts rather than assuming playbook logic
+# is wrong.
+ansible_command_timeout: 90
+ansible_connect_timeout: 90
+persistent_command_timeout: 90
+persistent_connect_timeout: 90

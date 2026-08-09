@@ -1,0 +1,16 @@
+---
+# Distribution switch for DEIE. Trunks up to SW-CORE and down to
+# SW-A-DEIE. VLAN 10 must exist here so it can be trunked through.
+vlans:
+  - vlan_id: 10
+    name: VLAN_DEIE
+  - vlan_id: 99
+    name: MGMT
+  - vlan_id: 100
+    name: NATIVE
+
+trunk_interfaces:
+  - interface: FastEthernet1/0
+    description: "Uplink to SW-CORE"
+  - interface: FastEthernet1/1
+    description: "Downlink to SW-A-DEIE"

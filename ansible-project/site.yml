@@ -1,0 +1,34 @@
+---
+# site.yml
+# Orchestrates all switch-side roles across distribution + access
+# switches. Run order matters: VLANs must exist before trunks/access
+# ports reference them.
+#
+# Usage:
+#   ansible-playbook site.yml
+#   ansible-playbook site.yml --check      # idempotency test
+
+- hosts: all
+  gather_facts: no
+  connection: network_cli
+  roles:
+    - vlans
+
+- hosts: distribution
+  gather_facts: no
+  connection: network_cli
+  roles:
+    - trunking
+
+- hosts: access
+  gather_facts: no
+  connection: network_cli
+  roles:
+    - trunking
+    - access_ports
+
+- hosts: all
+  gather_facts: no
+  connection: network_cli
+  roles:
+    - stp
