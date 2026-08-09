@@ -12,20 +12,20 @@
   gather_facts: no
   connection: network_cli
   roles:
-    - vlans
+    # - vlans
 
 - hosts: distribution
   gather_facts: no
   connection: network_cli
   roles:
-    - trunking
+    # - trunking
 
 - hosts: access
   gather_facts: no
   connection: network_cli
   roles:
-    - trunking
-    - access_ports
+    # - trunking
+    # - access_ports
 
 - hosts: all
   gather_facts: no

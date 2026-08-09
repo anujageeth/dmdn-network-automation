@@ -20,7 +20,7 @@ devices:
   # Routers (c7200 / Dynamips)
   # ---------------------------------------------------------------
   - name: R-EDGE
-    ip: 10.99.99.2
+    ip: 192.168.100.6
     device_type: cisco_ios
     role: edge_router
     interfaces:
@@ -28,14 +28,8 @@ devices:
         ip: 192.168.100.6
         mask: 255.255.255.252
         description: "Link to R-CORE"
-      - name: FastEthernet1/0
-        ip: 203.0.113.2          # placeholder ISP-facing / cloud-side address - replace with your GNS3 cloud segment
-        mask: 255.255.255.252
-        description: "Uplink to Internet Cloud"
-    default_route:
-      next_hop: 203.0.113.1      # replace with your Internet Cloud / simulated ISP next-hop
     nat:
-      inside_interfaces: []       # R-EDGE has no VLAN-facing interfaces directly; NAT is sourced from SW-CORE-routed traffic
+      inside_interfaces: []
       outside_interface: FastEthernet1/0
       inside_source_acl: NAT_PERMIT
       acl_rules:
@@ -43,7 +37,7 @@ devices:
         - "permit 10.10.20.0 0.0.0.255"   # VLAN_DCEE
 
   - name: R-CORE
-    ip: 10.99.99.1
+    ip: 192.168.100.1
     device_type: cisco_ios
     role: core_router
     interfaces:
@@ -69,7 +63,7 @@ devices:
   # Core switch (c3725 / Dynamips) - L3 inter-VLAN routing + ACLs
   # ---------------------------------------------------------------
   - name: SW-CORE
-    ip: 10.99.99.3
+    ip: 10.99.99.1
     device_type: cisco_ios
     role: core_switch
     routed_interface:
@@ -91,7 +85,7 @@ devices:
         ip: 10.10.40.1
         mask: 255.255.255.0
       - vlan: 99
-        ip: 10.99.99.3
+        ip: 10.99.99.1
         mask: 255.255.255.0
     ospf:
       process_id: 1
@@ -124,6 +118,7 @@ devices:
           - "permit ip 10.10.10.0 0.0.0.255 10.10.40.0 0.0.0.255"
           - "permit udp host 10.10.40.100 any eq snmp"
           - "permit tcp any host 10.99.99.3 eq 22"
+          - "permit ip 10.10.10.0 0.0.0.255 any"
       - name: ACL_DCEE_IN
         apply_to_svi: 20
         direction: in
@@ -164,21 +159,21 @@ devices:
     role: distribution_switch
 
   - name: SW-A-DEIE
-    ip: 10.99.99.21
+    ip: 10.99.99.14
     device_type: cisco_ios
     role: access_switch
 
   - name: SW-A-DCEE
-    ip: 10.99.99.22
+    ip: 10.99.99.15
     device_type: cisco_ios
     role: access_switch
 
   - name: SW-A-DMME
-    ip: 10.99.99.23
+    ip: 10.99.99.16
     device_type: cisco_ios
     role: access_switch
 
   - name: SW-A-DIS
-    ip: 10.99.99.24
+    ip: 10.99.99.17
     device_type: cisco_ios
     role: access_switch

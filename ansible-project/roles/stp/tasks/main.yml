@@ -1,16 +1,9 @@
 ---
-# roles/stp/tasks/main.yml
-# The c3725 image defaults to PVST spanning-tree mode. This role
-# switches every switch to Rapid-PVST - a one-line, low-risk change
-# noted as a design polish point in Section 3's platform note.
-
-- name: Set spanning-tree mode to rapid-pvst
+- name: Ensure Management Domain is configured for Automation
   cisco.ios.ios_config:
     lines:
-      - "spanning-tree mode rapid-pvst"
-  register: stp_output
+      - ip domain-name campus.local
 
 - name: Save configuration if modified
   cisco.ios.ios_config:
     save_when: modified
-  when: stp_output.changed
