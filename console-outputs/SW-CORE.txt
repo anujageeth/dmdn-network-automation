@@ -1,0 +1,49 @@
+SW-CORE#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-CORE(config)#
+SW-CORE(config)#! Exclude Gateway Addresses
+SW-CORE(config)#ip dhcp excluded-address 10.10.10.1
+SW-CORE(config)#ip dhcp excluded-address 10.10.20.1
+SW-CORE(config)#ip dhcp excluded-address 10.10.30.1
+SW-CORE(config)#ip dhcp excluded-address 10.10.40.1
+SW-CORE(config)#
+SW-CORE(config)#! DEIE Pool
+SW-CORE(config)#ip dhcp pool DEIE
+SW-CORE(dhcp-config)# network 10.10.10.0 255.255.255.0
+SW-CORE(dhcp-config)# default-router 10.10.10.1
+SW-CORE(dhcp-config)# dns-server 8.8.8.8
+SW-CORE(dhcp-config)#
+SW-CORE(dhcp-config)#! DCEE Pool
+SW-CORE(dhcp-config)#ip dhcp pool DCEE
+SW-CORE(dhcp-config)# network 10.10.20.0 255.255.255.0
+SW-CORE(dhcp-config)# default-router 10.10.20.1
+SW-CORE(dhcp-config)# dns-server 8.8.8.8
+SW-CORE(dhcp-config)#
+SW-CORE(dhcp-config)#! DMME Pool
+SW-CORE(dhcp-config)#ip dhcp pool DMME
+SW-CORE(dhcp-config)# network 10.10.30.0 255.255.255.0
+SW-CORE(dhcp-config)# default-router 10.10.30.1
+SW-CORE(dhcp-config)# dns-server 8.8.8.8
+SW-CORE(dhcp-config)#
+SW-CORE(dhcp-config)#! DIS Pool
+SW-CORE(dhcp-config)#ip dhcp pool DIS
+SW-CORE(dhcp-config)# network 10.10.40.0 255.255.255.0
+SW-CORE(dhcp-config)# default-router 10.10.40.1
+SW-CORE(dhcp-config)# dns-server 8.8.8.8
+SW-CORE(dhcp-config)#exit
+SW-CORE(config)#
+SW-CORE(config)#
+SW-CORE(config)#exit
+SW-CORE#
+*Mar  1 00:18:29.579: %SYS-5-CONFIG_I: Configured from console by console
+SW-CORE#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-CORE(config)#service dhcp
+SW-CORE(config)#exit
+SW-CORE#
+SW-CORE#
+*Mar  1 00:18:45.699: %SYS-5-CONFIG_I: Configured from console by console
+SW-CORE#write memory
+Building configuration...
+[OK]
+SW-CORE#

@@ -1,16 +1,94 @@
 
-PC-DEIE-1> ping 10.10.10.1
+Welcome to Virtual PC Simulator, version 0.8.3
+Dedicated to Daling.
+Build time: Sep  9 2023 11:15:00
+Copyright (c) 2007-2015, Paul Meng (mirnshi@gmail.com)
+All rights reserved.
 
-84 bytes from 10.10.10.1 icmp_seq=1 ttl=255 time=39.532 ms
-84 bytes from 10.10.10.1 icmp_seq=2 ttl=255 time=80.981 ms
-84 bytes from 10.10.10.1 icmp_seq=3 ttl=255 time=31.197 ms
-84 bytes from 10.10.10.1 icmp_seq=4 ttl=255 time=102.251 ms
-84 bytes from 10.10.10.1 icmp_seq=5 ttl=255 time=30.183 ms
+VPCS is free software, distributed under the terms of the "BSD" licence.
+Source code and license can be found at vpcs.sf.net.
+For more information, please visit wiki.freecode.com.cn.
 
-PC-DEIE-1> ping 10.10.30.10
+Press '?' to get help.
 
-10.10.30.10 icmp_seq=1 timeout
-84 bytes from 10.10.30.10 icmp_seq=2 ttl=63 time=38.261 ms
-84 bytes from 10.10.30.10 icmp_seq=3 ttl=63 time=39.875 ms
-84 bytes from 10.10.30.10 icmp_seq=4 ttl=63 time=42.477 ms
-84 bytes from 10.10.30.10 icmp_seq=5 ttl=63 time=63.168 ms
+Executing the startup file
+
+
+Checking for duplicate address...
+PC-DEIE-1 : 10.10.10.10 255.255.255.0 gateway 10.10.10.1
+
+PC-DEIE-1>
+PC-DEIE-1> ping 10.10.40.100
+
+10.10.40.100 icmp_seq=1 timeout
+84 bytes from 10.10.40.100 icmp_seq=2 ttl=63 time=24.622 ms
+84 bytes from 10.10.40.100 icmp_seq=3 ttl=63 time=99.291 ms
+84 bytes from 10.10.40.100 icmp_seq=4 ttl=63 time=26.173 ms
+84 bytes from 10.10.40.100 icmp_seq=5 ttl=63 time=17.028 ms
+
+PC-DEIE-1> ping 192.168.100.6
+
+84 bytes from 192.168.100.6 icmp_seq=1 ttl=253 time=43.913 ms
+84 bytes from 192.168.100.6 icmp_seq=2 ttl=253 time=95.981 ms
+84 bytes from 192.168.100.6 icmp_seq=3 ttl=253 time=159.613 ms
+84 bytes from 192.168.100.6 icmp_seq=4 ttl=253 time=56.879 ms
+84 bytes from 192.168.100.6 icmp_seq=5 ttl=253 time=76.999 ms
+
+PC-DEIE-1> ping 10.10.10.11
+
+84 bytes from 10.10.10.11 icmp_seq=1 ttl=64 time=0.774 ms
+84 bytes from 10.10.10.11 icmp_seq=2 ttl=64 time=1.190 ms
+84 bytes from 10.10.10.11 icmp_seq=3 ttl=64 time=0.486 ms
+84 bytes from 10.10.10.11 icmp_seq=4 ttl=64 time=1.305 ms
+84 bytes from 10.10.10.11 icmp_seq=5 ttl=64 time=3.843 ms
+
+PC-DEIE-1>
+PC-DEIE-1> ping 10.10.20.11
+
+10.10.20.11 icmp_seq=1 timeout
+84 bytes from 10.10.20.11 icmp_seq=2 ttl=63 time=63.450 ms
+84 bytes from 10.10.20.11 icmp_seq=3 ttl=63 time=116.376 ms
+84 bytes from 10.10.20.11 icmp_seq=4 ttl=63 time=66.862 ms
+84 bytes from 10.10.20.11 icmp_seq=5 ttl=63 time=56.740 ms
+
+PC-DEIE-1> ping 10.10.30.11
+
+10.10.30.11 icmp_seq=1 timeout
+84 bytes from 10.10.30.11 icmp_seq=2 ttl=63 time=44.234 ms
+84 bytes from 10.10.30.11 icmp_seq=3 ttl=63 time=217.195 ms
+84 bytes from 10.10.30.11 icmp_seq=4 ttl=63 time=66.184 ms
+84 bytes from 10.10.30.11 icmp_seq=5 ttl=63 time=36.496 ms
+
+PC-DEIE-1> ping 10.10.40.11
+
+10.10.40.11 icmp_seq=1 timeout
+84 bytes from 10.10.40.11 icmp_seq=2 ttl=63 time=52.306 ms
+84 bytes from 10.10.40.11 icmp_seq=3 ttl=63 time=46.643 ms
+84 bytes from 10.10.40.11 icmp_seq=4 ttl=63 time=66.742 ms
+84 bytes from 10.10.40.11 icmp_seq=5 ttl=63 time=46.207 ms
+
+PC-DEIE-1> ip dhcp ping 8.8.8.8
+
+ip ARG ... [OPTION]
+  Configure the current VPC's IP settings
+    ARG ...:
+    address [mask] [gateway]
+    address [gateway] [mask]
+                   Set the VPC's ip, default gateway ip and network mask
+                   Default IPv4 mask is /24, IPv6 is /64. Example:
+                   ip 10.1.1.70/26 10.1.1.65 set the VPC's ip to 10.1.1.70,
+                   the gateway to 10.1.1.65, the netmask to 255.255.255.192.
+                   In tap mode, the ip of the tapx is the maximum host ID
+                   of the subnet. In the example above the tapx ip would be
+                   10.1.1.126
+                   mask may be written as /26, 26 or 255.255.255.192
+    auto           Attempt to obtain IPv6 address, mask and gateway using SLAAC
+    dhcp [OPTION]  Attempt to obtain IPv4 address, mask, gateway, DNS via DHCP
+          -d         Show DHCP packet decode
+          -r         Renew DHCP lease
+          -x         Release DHCP lease
+    dns ip         Set DNS server ip, delete if ip is '0'
+    dns6 ipv6      Set DNS server ipv6, delete if ipv6 is '0'
+    domain NAME    Set local domain name to NAME
+
+PC-DEIE-1>

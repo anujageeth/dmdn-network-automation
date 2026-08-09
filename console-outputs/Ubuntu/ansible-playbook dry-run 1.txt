@@ -1,0 +1,186 @@
+zabbix@admin-vm:~/dmdn-network-automation/ansible-project$ ansible-playbook site.yml --check
+[WARNING]: Collection cisco.ios does not support Ansible version 2.10.8
+
+PLAY [all] **************************************************************************************************************************************************************************
+[WARNING]: Collection ansible.netcommon does not support Ansible version 2.10.8
+
+TASK [vlans : Configure VLANs] ******************************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+failed: [SW-D-DMME] (item=VLAN 30 (VLAN_DMME)) => changed=false 
+  ansible_loop_var: item
+  item:
+    name: VLAN_DMME
+    vlan_id: 30
+  msg: '[Errno None] Unable to connect to port 22 on 10.99.99.13'
+failed: [SW-D-DMME] (item=VLAN 99 (MGMT)) => changed=false 
+  ansible_loop_var: item
+  item:
+    name: MGMT
+    vlan_id: 99
+  msg: '[Errno None] Unable to connect to port 22 on 10.99.99.13'
+failed: [SW-D-DMME] (item=VLAN 100 (NATIVE)) => changed=false 
+  ansible_loop_var: item
+  item:
+    name: NATIVE
+    vlan_id: 100
+  msg: '[Errno None] Unable to connect to port 22 on 10.99.99.13'
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+changed: [SW-D-DEIE] => (item=VLAN 10 (VLAN_DEIE))
+changed: [SW-D-DEIE] => (item=VLAN 99 (MGMT))
+changed: [SW-D-DEIE] => (item=VLAN 100 (NATIVE))
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+changed: [SW-A-DEIE] => (item=VLAN 10 (VLAN_DEIE))
+changed: [SW-A-DCEE] => (item=VLAN 20 (VLAN_DCEE))
+changed: [SW-A-DEIE] => (item=VLAN 99 (MGMT))
+changed: [SW-A-DEIE] => (item=VLAN 100 (NATIVE))
+changed: [SW-A-DCEE] => (item=VLAN 99 (MGMT))
+changed: [SW-A-DCEE] => (item=VLAN 100 (NATIVE))
+changed: [SW-D-DCEE] => (item=VLAN 20 (VLAN_DCEE))
+changed: [SW-D-DCEE] => (item=VLAN 99 (MGMT))
+changed: [SW-D-DCEE] => (item=VLAN 100 (NATIVE))
+changed: [SW-A-DMME] => (item=VLAN 30 (VLAN_DMME))
+changed: [SW-A-DMME] => (item=VLAN 99 (MGMT))
+changed: [SW-A-DMME] => (item=VLAN 100 (NATIVE))
+changed: [SW-A-DIS] => (item=VLAN 40 (VLAN_DIS))
+changed: [SW-A-DIS] => (item=VLAN 99 (MGMT))
+changed: [SW-A-DIS] => (item=VLAN 100 (NATIVE))
+
+TASK [vlans : Save configuration if modified] ***************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-D-DEIE]
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-A-DCEE]
+ok: [SW-A-DIS]
+ok: [SW-D-DCEE]
+ok: [SW-A-DEIE]
+ok: [SW-A-DMME]
+
+PLAY [distribution] *****************************************************************************************************************************************************************
+
+TASK [trunking : Configure trunk interfaces] ****************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+changed: [SW-D-DCEE] => (item=FastEthernet1/0 (Uplink to SW-CORE))
+changed: [SW-D-DCEE] => (item=FastEthernet1/1 (Downlink to SW-A-DCEE))
+changed: [SW-D-DEIE] => (item=FastEthernet1/0 (Uplink to SW-CORE))
+changed: [SW-D-DEIE] => (item=FastEthernet1/1 (Downlink to SW-A-DEIE))
+
+TASK [trunking : Save configuration if modified] ************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-D-DCEE]
+ok: [SW-D-DEIE]
+
+PLAY [access] ***********************************************************************************************************************************************************************
+
+TASK [trunking : Configure trunk interfaces] ****************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+changed: [SW-A-DIS] => (item=FastEthernet1/0 (Uplink to SW-CORE))
+changed: [SW-A-DMME] => (item=FastEthernet1/0 (Uplink to SW-D-DMME))
+changed: [SW-A-DEIE] => (item=FastEthernet1/0 (Uplink to SW-D-DEIE))
+changed: [SW-A-DCEE] => (item=FastEthernet1/0 (Uplink to SW-D-DCEE))
+
+TASK [trunking : Save configuration if modified] ************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-A-DEIE]
+ok: [SW-A-DMME]
+ok: [SW-A-DCEE]
+ok: [SW-A-DIS]
+
+TASK [access_ports : Configure access ports] ****************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+changed: [SW-A-DCEE] => (item=FastEthernet1/2 -> VLAN 20)
+changed: [SW-A-DCEE] => (item=FastEthernet1/3 -> VLAN 20)
+changed: [SW-A-DMME] => (item=FastEthernet1/2 -> VLAN 30)
+changed: [SW-A-DEIE] => (item=FastEthernet1/2 -> VLAN 10)
+changed: [SW-A-DMME] => (item=FastEthernet1/3 -> VLAN 30)
+changed: [SW-A-DEIE] => (item=FastEthernet1/3 -> VLAN 10)
+changed: [SW-A-DIS] => (item=FastEthernet1/2 -> VLAN 40)
+changed: [SW-A-DIS] => (item=FastEthernet1/3 -> VLAN 40)
+changed: [SW-A-DIS] => (item=FastEthernet1/4 -> VLAN 40)
+
+TASK [access_ports : Save configuration if modified] ********************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-A-DMME]
+ok: [SW-A-DEIE]
+ok: [SW-A-DCEE]
+ok: [SW-A-DIS]
+
+PLAY [all] **************************************************************************************************************************************************************************
+
+TASK [stp : Set spanning-tree mode to rapid-pvst] ***********************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+changed: [SW-A-DMME]
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+changed: [SW-A-DCEE]
+changed: [SW-D-DEIE]
+changed: [SW-D-DCEE]
+changed: [SW-A-DEIE]
+changed: [SW-A-DIS]
+
+TASK [stp : Save configuration if modified] *****************************************************************************************************************************************
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-A-DCEE]
+[WARNING]: Collection ansible.utils does not support Ansible version 2.10.8
+ok: [SW-A-DEIE]
+ok: [SW-A-DMME]
+ok: [SW-D-DEIE]
+ok: [SW-D-DCEE]
+ok: [SW-A-DIS]
+
+PLAY RECAP **************************************************************************************************************************************************************************
+SW-A-DCEE                  : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+SW-A-DEIE                  : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+SW-A-DIS                   : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+SW-A-DMME                  : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+SW-D-DCEE                  : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+SW-D-DEIE                  : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+SW-D-DMME                  : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0 

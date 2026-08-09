@@ -76,3 +76,62 @@ R-EDGE#write memory
 Building configuration...
 [OK]
 R-EDGE#
+
+=============================
+
+R-EDGE#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R-EDGE(config)#
+R-EDGE(config)#! 1. Configure Outside Interface facing NAT Cloud (Fa1/0)
+R-EDGE(config)#interface FastEthernet 1/0
+R-EDGE(config-if)# ip address dhcp
+R-EDGE(config-if)# ip nat outside
+R-EDGE(config-if)# no shutdown
+R-EDGE(config-if)#exit
+R-EDGE(config)#
+R-EDGE(config)#! 2. Configure Inside Interface facing R-CORE (Fa0/0)
+R-EDGE(config)#interface FastEthernet 0/0
+R-EDGE(config-if)# ip nat inside
+R-EDGE(config-if)#exit
+R-EDGE(config)#
+R-EDGE(config)#! 3. Access List for internal 10.x.x.x subnets
+R-EDGE(config)#access-list 1 permit 10.0.0.0 0.255.255.255
+R-EDGE(config)#
+R-EDGE(config)#! 4. Enable PAT on Fa1/0
+R-EDGE(config)#$de source list 1 interface FastEthernet 1/0 overload
+R-EDGE(config)#
+R-EDGE(config)#! 5. Inject Default Route into OSPF
+R-EDGE(config)#router ospf 1
+R-EDGE(config-router)# default-information originate
+R-EDGE(config-router)#exit
+*Aug  9 07:55:41.731: %LINEPROTO-5-UPDOWN: Line protocol on Interface NVI0, changed state to up
+R-EDGE(config-router)#exit
+*Aug  9 07:55:45.315: %LINK-3-UPDOWN: Interface FastEthernet1/0, changed state to up
+*Aug  9 07:55:46.315: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet1/0, changed state to up
+R-EDGE(config-router)#exit
+R-EDGE(config)#
+*Aug  9 07:55:57.899: %DHCP-6-ADDRESS_ASSIGN: Interface FastEthernet1/0 assigned DHCP address 192.168.42.124, mask 255.255.255.0, hostname R-EDGE
+
+R-EDGE(config)#
+R-EDGE(config)#
+R-EDGE(config)#
+R-EDGE(config)#do show ip interface brief
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.100.6   YES NVRAM  up                    up
+FastEthernet1/0            192.168.42.124  YES DHCP   up                    up
+FastEthernet1/1            unassigned      YES NVRAM  administratively down down
+FastEthernet2/0            unassigned      YES NVRAM  administratively down down
+FastEthernet2/1            unassigned      YES NVRAM  administratively down down
+NVI0                       192.168.100.6   YES unset  up                    up
+R-EDGE(config)#
+R-EDGE(config)#write memory
+                ^
+% Invalid input detected at '^' marker.
+
+R-EDGE(config)#do write memory
+Building configuration...
+[OK]
+R-EDGE(config)#exit
+R-EDGE#
+*Aug  9 08:09:46.283: %SYS-5-CONFIG_I: Configured from console by console
+R-EDGE#
